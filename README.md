@@ -1,0 +1,1 @@
+# -dr.pogodin-react-native-static-server
