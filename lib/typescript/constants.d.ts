@@ -11,4 +11,3 @@ export declare enum STATES {
     STARTING = 3,
     STOPPING = 4
 }
-//# sourceMappingURL=constants.d.ts.map

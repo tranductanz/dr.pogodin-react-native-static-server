@@ -16,4 +16,3 @@ export interface Spec extends TurboModule {
 }
 declare const _default: Spec;
 export default _default;
-//# sourceMappingURL=NativeReactNativeStaticServer.d.ts.map
