@@ -1,6 +1,6 @@
 {
   "name": "@dr.pogodin/react-native-static-server",
-  "version": "0.21.1",
+  "version": "0.21.2",
   "description": "Embedded HTTP server for React Native TAN FIXed",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",

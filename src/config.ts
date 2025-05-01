@@ -1,3 +1,5 @@
+// src/config.ts (after fix)
+
 import RNBlobUtil from 'react-native-blob-util';
 
 export const WORK_DIR = `${RNBlobUtil.fs.dirs.CacheDir}/__rn-static-server__`;
@@ -23,17 +25,27 @@ export type StandardConfigOptions = {
   webdav?: string[];
 };
 
+async function safeMkdir(path: string) {
+  const exists = await RNBlobUtil.fs.exists(path);
+  if (!exists) {
+    await RNBlobUtil.fs.mkdir(path);
+  }
+}
+
 function errorLogConfig(errorLogOptions?: ErrorLogOptions): string {
   const res = [];
   if (errorLogOptions) {
-    const enable = (op: string) => res.push(`debug.log-${op} = "enable"`);
-    if (errorLogOptions.conditionHandling) enable('condition-handling');
-    if (errorLogOptions.fileNotFound) enable('file-not-found');
-    if (errorLogOptions.requestHandling) enable('request-handling');
-    if (errorLogOptions.requestHeader) enable('request-header');
-    if (errorLogOptions.requestHeaderOnError) enable('request-header-on-error');
-    if (errorLogOptions.responseHeader) enable('response-header');
-    if (errorLogOptions.timeouts) enable('timeouts');
+    const ops = errorLogOptions;
+    const enable = (op: string) => {
+      res.push(`debug.log-${op} = "enable"`);
+    };
+    if (ops.conditionHandling) enable('condition-handling');
+    if (ops.fileNotFound) enable('file-not-found');
+    if (ops.requestHandling) enable('request-handling');
+    if (ops.requestHeader) enable('request-header');
+    if (ops.requestHeaderOnError) enable('request-header-on-error');
+    if (ops.responseHeader) enable('response-header');
+    if (ops.timeouts) enable('timeouts');
   } else {
     res.push('server.errorlog-use-syslog = "enable"');
   }
@@ -51,25 +63,24 @@ function standardConfig({
   let webdavConfig = '';
   if (webdav) {
     webdavConfig += 'server.modules += ("mod_webdav")';
-    for (const path of webdav) {
-      webdavConfig += `$HTTP["url"] =~ "${path}" { webdav.activate = "enable" }`;
+    for (let i = 0; i < webdav.length; ++i) {
+      webdavConfig += `$HTTP["url"] =~ "${webdav[i]}" { webdav.activate = "enable" }`;
     }
   }
 
   return `server.document-root = "${fileDir}"
-  server.bind = "${hostname}"
-  server.upload-dirs = ( "${UPLOADS_DIR}" )
-  server.port = ${port}
-  ${errorLogConfig(errorLog)}
-  index-file.names += ("index.html", "default.htm")
-  ${webdavConfig}
-  ${extraConfig}`;
+server.bind = "${hostname}"
+server.upload-dirs = ( "${UPLOADS_DIR}" )
+server.port = ${port}
+${errorLogConfig(errorLog)}
+index-file.names += ("index.xhtml", "index.html", "index.htm", "default.htm", "index.php")
+
+${webdavConfig}
+${extraConfig}`;
 }
 
-export async function newStandardConfigFile(
-  options: StandardConfigOptions,
-): Promise<string> {
-  await RNBlobUtil.fs.mkdir(UPLOADS_DIR);
+export async function newStandardConfigFile(options: StandardConfigOptions): Promise<string> {
+  await safeMkdir(UPLOADS_DIR);
   const configFile = `${WORK_DIR}/config-${Date.now()}.txt`;
   await RNBlobUtil.fs.writeFile(configFile, standardConfig(options), 'utf8');
   return configFile;
