@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Midl Include="ReactPackageProvider.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="ReactPackageProvider.cpp" />
+    <ClCompile Include="ReactNativeModule.cpp" />
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="Errors.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="ReactPackageProvider.h" />
+    <ClInclude Include="ReactNativeModule.h" />
+    <ClInclude Include="Server.h" />
+    <ClInclude Include="Errors.h" />
+    <ClInclude Include="codegen\NativeReactNativeStaticServerSpec.g.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PropertySheet.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Lighttpd">
+      <UniqueIdentifier>{ac89e086-a7ef-46ed-8566-8e8bbcc1eab4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="lighttpd\libwinpthread-1.dll">
+      <Filter>Lighttpd</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="lighttpd\mod_dirlisting.dll">
+      <Filter>Lighttpd</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="lighttpd\lighttpd.dll">
+      <Filter>Lighttpd</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="lighttpd\libpcre2-8.dll">
+      <Filter>Lighttpd</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="lighttpd\mod_webdav.dll">
+      <Filter>Lighttpd</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
+</Project>
