@@ -1,6 +1,6 @@
 {
   "name": "@dr.pogodin/react-native-static-server",
-  "version": "0.21.5",
+  "version": "0.21.6",
   "description": "Embedded HTTP server for React Native TAN FIXed",
   "source": "./src/index.tsx",
   "main": "./lib/module/index.js",
@@ -11,6 +11,11 @@
       "default": "./lib/module/index.js"
     },
     "./package.json": "./package.json"
+  },
+  "codegenConfig": {
+    "name": "ReactNativeStaticServer",
+    "type": "modules",
+    "jsSrcsDir": "./src"
   },
   "scripts": {
     "clean": "rm -rf lib",
